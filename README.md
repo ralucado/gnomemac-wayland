@@ -38,13 +38,12 @@ gnomemac-backup/
 
 - Ubuntu 22.04 LTS (Jammy)
 - GNOME Shell 42.x
-- **Wayland session** (we settled on Wayland after the X11 multi-monitor pain;
-  X11 also works but isn't what this backup is tuned for)
+- **Wayland session** (X11 also works but isn't what this backup is tuned for)
 - NVIDIA-only GPU (laptop with no Intel iGPU exposed) — driver 580.x
 
 ## Manual gotchas before restore.sh works
 
-These steps need human attention because they involve installing third-party
+These steps need manual execution because they involve installing third-party
 packages, downloading from vendor sites, or rebooting. Do them in this order
 **before** running `restore.sh`.
 
@@ -112,7 +111,7 @@ echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://package
 printf 'Package: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000\n' \
   | sudo tee /etc/apt/preferences.d/mozilla
 sudo snap remove firefox     # if installed
-sudo apt update && sudo apt install -y firefox
+sudo apt update && sudo apt install -y firefox --allow-downgrades
 ```
 
 The pin file makes apt prefer Mozilla's repo over the Ubuntu transitional
@@ -123,8 +122,7 @@ correctly on first launch.
 ### 4. Apple SF Pro / SF Mono / New York fonts
 
 Apple distributes these for free from
-<https://developer.apple.com/fonts/> but the license forbids re-distribution,
-so they're not bundled in this archive. Download the four DMGs (SF Pro,
+<https://developer.apple.com/fonts/>. Download the four DMGs (SF Pro,
 SF Mono, SF Compact, NY) into `~/Downloads/`, then `restore.sh` extracts and
 installs them. Direct CDN URLs (subject to change):
 ```
@@ -149,10 +147,9 @@ Browser add-ons (one or the other):
 - Firefox: <https://addons.mozilla.org/firefox/addon/gnome-shell-integration/>
 - Chrome:  <https://chromewebstore.google.com/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep>
 
-Then install each of these 16 extensions (URLs link by UUID):
+Then install each of these extensions (URLs link by UUID):
 
 ```
-https://extensions.gnome.org/extension/by-uuid/x11gestures@joseexposito.github.io
 https://extensions.gnome.org/extension/by-uuid/fullscreen-to-empty-workspace@aiono.dev
 https://extensions.gnome.org/extension/by-uuid/user-theme@gnome-shell-extensions.gcampax.github.com
 https://extensions.gnome.org/extension/by-uuid/dash-to-dock@micxgx.gmail.com
@@ -170,16 +167,11 @@ https://extensions.gnome.org/extension/by-uuid/gestureImprovements@gestures
 (`ding@rastersoft.com` and `ubuntu-appindicators@ubuntu.com` ship with
 Ubuntu — already installed.)
 
-On Wayland, `x11gestures@joseexposito.github.io` is a no-op and can be
-skipped — Wayland handles 3-finger workspace swipes natively.
-
 ## How to restore
 
 After completing the manual steps above:
 
 ```sh
-tar -xzf gnomemac-backup.tar.gz
-cd gnomemac-backup
 ./restore.sh
 ```
 
