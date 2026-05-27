@@ -1,0 +1,15 @@
+@import "WhiteSur/colors/light.css";
+@import "WhiteSur/colors/dark.css";
+
+@import "WhiteSur/pages/common.css";
+@import "WhiteSur/pages/newtab.css";
+@import "WhiteSur/pages/reader.css";
+@import "WhiteSur/pages/privatebrowsing.css";
+
+/* Override moz-extension pages (Tab Stash, etc.) that use `font: caption`,
+ * which resolves to a serif on this system. Force SF Pro instead. */
+@-moz-document url-prefix("moz-extension://") {
+  html, body {
+    font-family: "SF Pro Text", "SF Pro Display", system-ui, sans-serif !important;
+  }
+}
